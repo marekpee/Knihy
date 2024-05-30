@@ -1,0 +1,85 @@
+﻿<h1>Knihovna knížek</h1>
+
+<div>
+    <label>Název knihy: <input type="text" @bind-value="Knizky.Informace.Nazev"/></label>
+    <br />
+    <label>Počet kusů: <input type="text" @bind-value="Knizky.Informace.PocetKusu" /></label>
+    <br />
+    <label>Autor: <input type="text" @bind-value="Knizky.Informace.Autor" /></label>
+    <br />
+    <label>Rok vydání: <input type="number" @bind-value="Knizky.Informace.Rok" /></label>
+    <br />
+    <label>Žánr: <input type="text" @bind-value="Knizky.Informace.Zanr" /></label>
+    <br />
+    <label>ISBN: <input type="number" @bind-value="Knizky.Informace.ISBN" /></label>
+    <br />
+    <label>Uskladnění: <input type="text" @bind-value="Knizky.Informace.Uskladneni" /></label>
+    <br />
+</div>
+
+<div class="mt-3">
+    @if (Knizky.IsEditace == false)
+    {
+        <button class="btn btn-info" @onclick="Knizky.Pridat">Přidat</button>
+    } else
+    {
+        <button class="btn btn-info" @onclick="Knizky.UkonciEditaci">Ukonči editaci</button>
+    }
+    <button class="btn btn-info" @onclick="Knizky.ZobrazVse">Zobraz všechny knížky</button>
+    
+</div>
+
+<div>
+    <label>Vyhledat knihu: <input type="text" @bind-value="Knizky.Informace.Vyhledat" /></label>
+    <br />
+    <button class="btn btn-warning" @onclick="Knizky.VyhledejKnihu">Vyhledat</button>
+</div>
+
+<p>@((MarkupString)Knizky.Vypis)</p>
+
+@if (!Knizky.KnizkyList.Any())
+{
+    <p>Zatím nejsou v knihovně žádné knížky.</p>
+} else
+{
+    <table class="table table-striped">
+        <thead> 
+            <tr>
+                <th>Název knihy</th>
+                <th>Počet kusů</th>
+                <th>Autor</th>
+                <th>Rok vydání</th>
+                <th>Žánr</th>
+                <th>ISBN</th>
+                <th>Uskladnění</th>
+                <th>Smazat</th>
+                <th>Edituj</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Knizky.KnizkyList)
+            {
+                <tr>
+                    <td>@item.Nazev</td>
+                    <td>@item.PocetKusu</td>
+                    <td>@item.Autor</td>
+                    <td>@item.Rok</td>
+                    <td>@item.Zanr</td>
+                    <td>@item.ISBN</td>
+                    <td>@item.Uskladneni</td>
+                    <td>
+                        <button @onclick="()=>Knizky.SmazatPolozku(item)">Smazat</button>
+                    </td>
+                    <td>
+                        <button @onclick="()=>Knizky.Edituj(item)">Edituj</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Models.Knihy Knizky = new Models.Knihy();
+}
